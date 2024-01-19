@@ -6,66 +6,47 @@ namespace Spotifu
     {
         static void Main()
         {
-            
+            List<Artist> artists = MusicLibrary.InitializeMusicLibrary();
 
             // Create a menu to choose an artist
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine("Spotifu - Vælg en artist");
-                Console.WriteLine("1. Kendrick Lamar");
-                Console.WriteLine("2. J. Cole");
-                Console.WriteLine("3. Drake");
-                Console.WriteLine("4. Exit");
+                for (int i = 0; i < artists.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {artists[i].Name}");
+                }
+                Console.WriteLine($"{artists.Count + 1}. Exit");
 
                 Console.Write("Indtast dit valg: ");
                 string artistChoice = Console.ReadLine();
 
-                if (artistChoice == "4")
+                if (artistChoice == (artists.Count + 1).ToString())
                 {
                     Console.WriteLine("Programmet slukkes");
                     return;
                 }
 
-                Artist selectedArtist = null;
-
-                switch (artistChoice)
+                if (int.TryParse(artistChoice, out int artistIndex) && artistIndex >= 1 && artistIndex <= artists.Count)
                 {
-                    case "1":
-                        selectedArtist = artist1;
-                        break;
-                    case "2":
-                        selectedArtist = artist2;
-                        break;
-                    case "3":
-                        selectedArtist = artist3;
-                        break;
-                    default:
-                        Console.WriteLine("Ugyldigt valg.");
-                        break;
-                }
+                    Artist selectedArtist = artists[artistIndex - 1];
 
-                if (selectedArtist != null)
-                {
                     // Create a menu to choose an album for the selected artist
                     while (true)
                     {
                         Console.Clear();
                         Console.WriteLine($"Artist: {selectedArtist.Name} - Vælg et Album:");
-                        int albumCount = 1;
-
-                        foreach (var album in selectedArtist.Albums)
+                        for (int i = 0; i < selectedArtist.Albums.Count; i++)
                         {
-                            Console.WriteLine($"{albumCount}. {album.Title}");
-                            albumCount++;
+                            Console.WriteLine($"{i + 1}. {selectedArtist.Albums[i].Title}");
                         }
-
-                        Console.WriteLine($"{albumCount}. Tilbage til Artist");
+                        Console.WriteLine($"{selectedArtist.Albums.Count + 1}. Tilbage til Artist");
 
                         Console.Write("Indtast dit valg: ");
                         string albumChoice = Console.ReadLine();
 
-                        if (albumChoice == albumCount.ToString())
+                        if (albumChoice == (selectedArtist.Albums.Count + 1).ToString())
                         {
                             break;
                         }
@@ -79,28 +60,25 @@ namespace Spotifu
                             {
                                 Console.Clear();
                                 Console.WriteLine($"Vælg en sang fra: {selectedArtist.Name} - {selectedAlbum.Title}");
-                                int songCount = 1;
-
-                                foreach (var song in selectedAlbum.Songs)
+                                for (int i = 0; i < selectedAlbum.Songs.Count; i++)
                                 {
-                                    Console.WriteLine($"{songCount}. {song.Title}");
-                                    songCount++;
+                                    Console.WriteLine($"{i + 1}. {selectedAlbum.Songs[i].Title}");
                                 }
-
-                                Console.WriteLine($"{songCount}. Tilbage til Album");
+                                Console.WriteLine($"{selectedAlbum.Songs.Count + 1}. Tilbage til Album");
 
                                 Console.Write("Indtast dit valg: ");
                                 string songChoice = Console.ReadLine();
 
-                                if (songChoice == songCount.ToString())
+                                if (songChoice == (selectedAlbum.Songs.Count + 1).ToString())
                                 {
                                     break;
                                 }
 
                                 if (int.TryParse(songChoice, out int songIndex) && songIndex >= 1 && songIndex <= selectedAlbum.Songs.Count)
                                 {
+                                    Song selectedSong = selectedAlbum.Songs[songIndex - 1];
                                     Player player = new Player();
-                                    player.PlaySong(selectedAlbum.Songs[songIndex - 1]);
+                                    player.PlaySong(selectedSong);
                                 }
                                 else
                                 {
@@ -113,6 +91,10 @@ namespace Spotifu
                             Console.WriteLine("Ugyldigt valg. Prøv igen");
                         }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Ugyldigt valg.");
                 }
             }
         }
