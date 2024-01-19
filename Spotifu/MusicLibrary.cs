@@ -1,10 +1,8 @@
-﻿using Spotifu.Sound;
-
-namespace Spotifu
+﻿namespace Spotifu
 {
     public class MusicLibrary
     {
-        public static void InitializeLibrary()
+        public static List<Artist> InitializeMusicLibrary()
         {
             // Create artists
             Artist artist1 = new Artist("Kendrick Lamar");
@@ -72,6 +70,8 @@ namespace Spotifu
 
             artist3.AddAlbum(album5);
             artist3.AddAlbum(album6);
+
+            return new List<Artist> { artist1, artist2, artist3 };
         }
     }
 }

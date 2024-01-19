@@ -1,6 +1,6 @@
 ﻿namespace Spotifu
 {
-    class Album
+    public class Album
     {
         public string Title { get; }
         public List<Song> Songs { get; }
